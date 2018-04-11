@@ -1,6 +1,8 @@
-function [R, W] = nonparametric_ica(X, K, N_RANDOM_INITS, PLOT_FIGURES, RAND_SEED)
+function [R, W, negentropy_alliterations, W_alliterations] = ...
+    nonparametric_ica(X, K, N_RANDOM_INITS, PLOT_FIGURES, RAND_SEED)
 
-% [R, W] = nonparametric_ica(X, K, N_RANDOM_INITS, PLOT_FIGURES, RAND_SEED)
+% [R, W, negentropy_alliterations, W_alliterations] = ...
+%     nonparametric_ica(X, K, N_RANDOM_INITS, PLOT_FIGURES, RAND_SEED)
 % 
 % Performs the nonparametric decomposition described in:
 % 
@@ -106,7 +108,7 @@ Rpca = U(:,1:K) * S(1:K,1:K);
 Wpca = V(:,1:K)';
 
 % rotate PCA component weights to maximize negentropy
-W = maximize_negentropy_via_rotation(Wpca, N_RANDOM_INITS, RAND_SEED, PLOT_FIGURES);
+[W, W_alliterations, negentropy_alliterations] = maximize_negentropy_via_rotation(Wpca, N_RANDOM_INITS, RAND_SEED, PLOT_FIGURES);
 
 % estimate the response profiles from data matrix and inferred weights
 R = X_zero_mean_rows*pinv(W);
